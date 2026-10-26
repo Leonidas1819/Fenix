@@ -126,13 +126,12 @@ footer {
 <section>
     <h2>Introducción</h2>
     <p>
-    Esta herramienta permite estudiar la geometría de dirección de un automóvil
-    mediante fórmulas matemáticas. Introduce las dimensiones del vehículo o los
-    ángulos medidos para obtener resultados e interpretaciones.
+    Esta aplicaciuon fue creada para permitir estudiar la geometría de dirección de un automóvil
+    mediante fórmulas matemáticas.Se introducen las dimensiones del vehículo o los
+    ángulos medidos para obtener resultados e interpretaciones que sean correspondientes.
     </p>
     <p class="nota">
-    Los resultados son teóricos. No sustituyen las especificaciones del fabricante
-    ni una medición profesional de alineación.
+    Los resultados son meramente teóricos.
     </p>
 </section>
 
@@ -140,8 +139,8 @@ footer {
     <h2>1. Geometría Ackermann y Anti-Ackermann</h2>
     <p>
     La geometría Ackermann busca que la rueda delantera interior gire más que la
-    exterior durante una curva. La geometría Anti-Ackermann invierte esa relación
-    y puede utilizarse en ciertos vehículos de competición.
+    exterior durante una curva. La geometría Anti-Ackermann invierte esa relación,
+    Osea que gire menos la rueda interior y más la exterior.
     </p>
 
     <div class="formula">
@@ -165,7 +164,7 @@ footer {
         </label>
     </div>
     <button onclick="calcularAckermann()">Calcular Ackermann</button>
-    <div class="resultado" id="rAck">Aquí aparecerán los resultados.</div>
+    <div class="resultado" id="rAck">Resultados.</div>
 </section>
 
 <section id="alineacion">
@@ -173,7 +172,7 @@ footer {
     <p>
     El caster es la inclinación longitudinal del eje de dirección; el camber es
     la inclinación de la rueda vista desde el frente; y la convergencia indica
-    si las ruedas apuntan hacia dentro o hacia fuera vistas desde arriba.
+    si las ruedas apuntan hacia dentro o hacia fuera desde las vistas desde arriba.
     </p>
 
     <div class="campos">
@@ -195,11 +194,6 @@ footer {
     </div>
     <button onclick="calcularAlineacion()">Interpretar alineación</button>
     <div class="resultado" id="rAlineacion">Aquí aparecerá la interpretación.</div>
-    <p class="nota">
-    Los rangos usados son orientativos y no determinan si un vehículo está bien
-    alineado. La convergencia se introduce como ángulo total del eje, no como
-    distancia en milímetros.
-    </p>
 </section>
 
 <section id="giro">
@@ -228,12 +222,7 @@ footer {
         </label>
     </div>
     <button onclick="calcularGiro()">Calcular relación y radio</button>
-    <div class="resultado" id="rGiro">Aquí aparecerán los resultados.</div>
-    <p class="nota">
-    El radio calculado corresponde al modelo bicicleta, medido desde el centro
-    del eje trasero hasta el centro de la trayectoria. El radio exterior aproximado
-    añade media vía. No es necesariamente el radio de bordillo a bordillo.
-    </p>
+    <div class="resultado" id="rGiro">Resultados.</div>
 </section>
 
 <section id="mecanismo">
@@ -264,7 +253,7 @@ footer {
         </label>
     </div>
     <button onclick="calcularBarra()">Calcular longitud de barra</button>
-    <div class="resultado" id="rBarra">Aquí aparecerá la longitud.</div>
+    <div class="resultado" id="rBarra">Resultado de la longitud.</div>
 
     <h3>Desplazamiento del extremo de una mangueta</h3>
     <div class="campos">
@@ -279,13 +268,8 @@ footer {
         </label>
     </div>
     <button onclick="calcularMangueta()">Calcular desplazamiento</button>
-    <div class="resultado" id="rMangueta">Aquí aparecerá el desplazamiento.</div>
+    <div class="resultado" id="rMangueta">Resultado desplazamiento.</div>
 
-    <p class="nota">
-    Estos cálculos describen distancias geométricas ideales. Para diseñar un
-    mecanismo real también se necesitan puntos de pivote, recorrido de suspensión,
-    ángulos de trabajo, holguras y comprobación de interferencias.
-    </p>
 </section>
 
 <section>
@@ -302,8 +286,8 @@ footer {
 </main>
 
 <footer>
-    <p>Calculadora educativa de Geometría de Dirección Automotriz</p>
     <p>Desarrollada en HTML, CSS y JavaScript</p>
+    <p>Por la mano de escuderia "FENIX" en colaboración con "UPIX"</p>
 </footer>
 
 <script>
