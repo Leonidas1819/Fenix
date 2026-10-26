@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Geometría de Dirección</title>
+
+<style>
+:root {
+    --fondo: #0b1120;
+    --panel: #152238;
+    --azul: #168bd2;
+    --cian: #38d9f5;
+    --texto: #eaf2ff;
+    --suave: #a9bad1;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+}
+header {
+    padding: 30px 18px;
+    text-align: center;
+    background: linear-gradient(135deg, #102b49, #101827);
+    border-bottom: 2px solid var(--cian);
+}
+header h1 { color: var(--cian); margin-bottom: 8px; }
+header p { color: var(--suave); }
+main { max-width: 1100px; margin: auto; padding: 20px; }
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    background: var(--panel);
+    padding: 11px 14px;
+    border-radius: 8px;
+}
+nav a:hover { background: var(--azul); }
+section {
+    background: var(--panel);
+    padding: 22px;
+    margin-bottom: 22px;
+    border-radius: 12px;
+    border: 1px solid #2c405b;
+}
+h2 { color: var(--cian); }
+h3 { color: #8fdfff; }
+p, li { line-height: 1.6; }
+.campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+}
+label { display: block; color: var(--suave); font-size: 14px; }
+input, select {
+    width: 100%;
+    margin-top: 7px;
+    padding: 11px;
+    border: 1px solid #415673;
+    border-radius: 6px;
+    background: #0b1526;
+    color: white;
+}
+button {
+    background: var(--azul);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    margin-top: 17px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover { background: #0870ad; }
+.resultado {
+    background: #0b1526;
+    border-left: 4px solid var(--cian);
+    padding: 15px;
+    margin-top: 18px;
+    border-radius: 5px;
+    overflow-wrap: anywhere;
+}
+.resultado strong { color: var(--cian); }
+.nota { color: var(--suave); font-size: 13px; }
+.formula {
+    padding: 12px;
+    background: #0b1526;
+    border-radius: 6px;
+    color: #b8e9ff;
+    overflow-wrap: anywhere;
+}
+footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--suave);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>GEOMETRÍA DE DIRECCIÓN AUTOMOTRIZ</h1>
+    <p>Calculadora de Ackermann, alineación, radio de giro y mecanismos de dirección</p>
+</header>
+
+<main>
+
+<nav>
+    <a href="#ackermann">Ackermann</a>
+    <a href="#alineacion">Alineación</a>
+    <a href="#giro">Relación y giro</a>
+    <a href="#mecanismo">Manguetas y barras</a>
+</nav>
+
+<section>
+    <h2>Introducción</h2>
+    <p>
+    Esta herramienta permite estudiar la geometría de dirección de un automóvil
+    mediante fórmulas matemáticas. Introduce las dimensiones del vehículo o los
+    ángulos medidos para obtener resultados e interpretaciones.
+    </p>
+    <p class="nota">
+    Los resultados son teóricos. No sustituyen las especificaciones del fabricante
+    ni una medición profesional de alineación.
+    </p>
+</section>
+
+<section id="ackermann">
+    <h2>1. Geometría Ackermann y Anti-Ackermann</h2>
+    <p>
+    La geometría Ackermann busca que la rueda delantera interior gire más que la
+    exterior durante una curva. La geometría Anti-Ackermann invierte esa relación
+    y puede utilizarse en ciertos vehículos de competición.
+    </p>
+
+    <div class="formula">
+    Ackermann ideal: cot(ángulo exterior) =
+    cot(ángulo interior) + distancia entre ruedas / distancia entre ejes
+    </div>
+
+    <h3>Datos del vehículo</h3>
+    <div class="campos">
+        <label>Distancia entre ejes (m)
+            <input id="aL" type="number" min="0.01" step="0.01" value="2.60">
+        </label>
+        <label>Vía delantera (m)
+            <input id="aT" type="number" min="0.01" step="0.01" value="1.50">
+        </label>
+        <label>Ángulo interior medido (grados)
+            <input id="aI" type="number" min="0.1" max="89" step="0.1" value="35">
+        </label>
+        <label>Ángulo exterior medido (grados)
+            <input id="aE" type="number" min="0.1" max="89" step="0.1" value="25">
+        </label>
+    </div>
+    <button onclick="calcularAckermann()">Calcular Ackermann</button>
+    <div class="resultado" id="rAck">Aquí aparecerán los resultados.</div>
+</section>
+
+<section id="alineacion">
+    <h2>2. Caster, convergencia y camber</h2>
+    <p>
+    El caster es la inclinación longitudinal del eje de dirección; el camber es
+    la inclinación de la rueda vista desde el frente; y la convergencia indica
+    si las ruedas apuntan hacia dentro o hacia fuera vistas desde arriba.
+    </p>
+
+    <div class="campos">
+        <label>Caster (grados)
+            <input id="caster" type="number" step="0.1" value="3">
+        </label>
+        <label>Camber (grados)
+            <input id="camber" type="number" step="0.1" value="-1">
+        </label>
+        <label>Convergencia total (grados)
+            <input id="toe" type="number" step="0.1" value="0.2">
+        </label>
+        <label>Convención de convergencia
+            <select id="toeTipo">
+                <option value="positivo">Positiva: hacia dentro</option>
+                <option value="negativo">Negativa: hacia fuera</option>
+            </select>
+        </label>
+    </div>
+    <button onclick="calcularAlineacion()">Interpretar alineación</button>
+    <div class="resultado" id="rAlineacion">Aquí aparecerá la interpretación.</div>
+    <p class="nota">
+    Los rangos usados son orientativos y no determinan si un vehículo está bien
+    alineado. La convergencia se introduce como ángulo total del eje, no como
+    distancia en milímetros.
+    </p>
+</section>
+
+<section id="giro">
+    <h2>3. Relación de dirección y radio de giro</h2>
+    <p>
+    La relación de dirección compara el giro del volante con el giro de las ruedas.
+    El radio de giro depende, entre otros factores, de la distancia entre ejes y
+    del ángulo de dirección.
+    </p>
+
+    <div class="campos">
+        <label>Giro del volante (grados)
+            <input id="volante" type="number" min="0.1" step="1" value="360">
+        </label>
+        <label>Giro de la rueda (grados)
+            <input id="rueda" type="number" min="0.1" max="89" step="0.1" value="30">
+        </label>
+        <label>Distancia entre ejes (m)
+            <input id="gL" type="number" min="0.01" step="0.01" value="2.60">
+        </label>
+        <label>Ángulo medio de dirección (grados)
+            <input id="gA" type="number" min="0.1" max="89" step="0.1" value="30">
+        </label>
+        <label>Vía delantera (m)
+            <input id="gT" type="number" min="0" step="0.01" value="1.50">
+        </label>
+    </div>
+    <button onclick="calcularGiro()">Calcular relación y radio</button>
+    <div class="resultado" id="rGiro">Aquí aparecerán los resultados.</div>
+    <p class="nota">
+    El radio calculado corresponde al modelo bicicleta, medido desde el centro
+    del eje trasero hasta el centro de la trayectoria. El radio exterior aproximado
+    añade media vía. No es necesariamente el radio de bordillo a bordillo.
+    </p>
+</section>
+
+<section id="mecanismo">
+    <h2>4. Manguetas, terminales y barras de dirección</h2>
+    <p>
+    La mangueta sostiene y permite orientar la rueda. El brazo de dirección
+    transmite el movimiento y la barra con sus terminales conecta los mecanismos.
+    La longitud de una barra entre dos puntos se obtiene mediante geometría.
+    </p>
+
+    <div class="formula">
+    Longitud = √[(x₂ − x₁)² + (y₂ − y₁)²]
+    </div>
+
+    <h3>Longitud entre puntos de conexión</h3>
+    <div class="campos">
+        <label>Punto A: coordenada X (mm)
+            <input id="x1" type="number" step="0.1" value="100">
+        </label>
+        <label>Punto A: coordenada Y (mm)
+            <input id="y1" type="number" step="0.1" value="50">
+        </label>
+        <label>Punto B: coordenada X (mm)
+            <input id="x2" type="number" step="0.1" value="400">
+        </label>
+        <label>Punto B: coordenada Y (mm)
+            <input id="y2" type="number" step="0.1" value="150">
+        </label>
+    </div>
+    <button onclick="calcularBarra()">Calcular longitud de barra</button>
+    <div class="resultado" id="rBarra">Aquí aparecerá la longitud.</div>
+
+    <h3>Desplazamiento del extremo de una mangueta</h3>
+    <div class="campos">
+        <label>Longitud del brazo (mm)
+            <input id="brazo" type="number" min="0.01" step="0.1" value="100">
+        </label>
+        <label>Ángulo inicial (grados)
+            <input id="ang1" type="number" step="0.1" value="0">
+        </label>
+        <label>Ángulo final (grados)
+            <input id="ang2" type="number" step="0.1" value="30">
+        </label>
+    </div>
+    <button onclick="calcularMangueta()">Calcular desplazamiento</button>
+    <div class="resultado" id="rMangueta">Aquí aparecerá el desplazamiento.</div>
+
+    <p class="nota">
+    Estos cálculos describen distancias geométricas ideales. Para diseñar un
+    mecanismo real también se necesitan puntos de pivote, recorrido de suspensión,
+    ángulos de trabajo, holguras y comprobación de interferencias.
+    </p>
+</section>
+
+<section>
+    <h2>Fórmulas utilizadas</h2>
+    <ul>
+        <li><strong>Ackermann:</strong> cot(δ exterior) = cot(δ interior) + vía / distancia entre ejes.</li>
+        <li><strong>Relación de dirección:</strong> giro del volante / giro de la rueda.</li>
+        <li><strong>Radio de giro:</strong> R = distancia entre ejes / tan(ángulo medio de rueda).</li>
+        <li><strong>Longitud de barra:</strong> distancia entre dos puntos en el plano.</li>
+        <li><strong>Desplazamiento del brazo:</strong> diferencia entre las posiciones de sus extremos al girar.</li>
+    </ul>
+</section>
+
+</main>
+
+<footer>
+    <p>Calculadora educativa de Geometría de Dirección Automotriz</p>
+    <p>Desarrollada en HTML, CSS y JavaScript</p>
+</footer>
+
+<script>
+function numero(id) {
+    return Number(document.getElementById(id).value);
+}
+
+function validar(valores) {
+    return valores.every(Number.isFinite);
+}
+
+function mostrar(id, texto) {
+    document.getElementById(id).innerHTML = texto;
+}
+
+function rad(grados) {
+    return grados * Math.PI / 180;
+}
+
+function grados(radianes) {
+    return radianes * 180 / Math.PI;
+}
+
+function fmt(valor, decimales = 2) {
+    return valor.toLocaleString("es-MX", {
+        minimumFractionDigits: decimales,
+        maximumFractionDigits: decimales
+    });
+}
+
+function calcularAckermann() {
+    const L = numero("aL");
+    const T = numero("aT");
+    const interior = numero("aI");
+    const exteriorMedido = numero("aE");
+
+    if (!validar([L,T,interior,exteriorMedido]) ||
+        L <= 0 || T <= 0 || interior <= 0 ||
+        interior >= 90 || exteriorMedido <= 0 || exteriorMedido >= 90) {
+        mostrar("rAck", "Introduce dimensiones positivas y ángulos entre 0° y 90°.");
+        return;
+    }
+
+    const exteriorIdeal = grados(Math.atan(
+        1 / (1 / Math.tan(rad(interior)) + T / L)
+    ));
+
+    const diferencia = exteriorMedido - exteriorIdeal;
+    let tipo;
+
+    if (Math.abs(diferencia) < 0.5) {
+        tipo = "Cercana a la geometría Ackermann ideal.";
+    } else if (diferencia > 0) {
+        tipo = "El ángulo exterior supera el ideal: tendencia Anti-Ackermann.";
+    } else {
+        tipo = "El ángulo exterior es menor que el ideal: tendencia a Ackermann más pronunciado.";
+    }
+
+    mostrar("rAck",
+        "<strong>Ángulo interior introducido:</strong> " + fmt(interior) + "°<br>" +
+        "<strong>Ángulo exterior ideal:</strong> " + fmt(exteriorIdeal) + "°<br>" +
+        "<strong>Ángulo exterior medido:</strong> " + fmt(exteriorMedido) + "°<br>" +
+        "<strong>Diferencia medida - ideal:</strong> " + fmt(diferencia) + "°<br>" +
+        "<strong>Interpretación:</strong> " + tipo +
+        "<p class='nota'>La clasificación compara solo los ángulos suministrados en esa posición de giro. No demuestra por sí sola el tipo de mecanismo instalado.</p>"
+    );
+}
+
+function calcularAlineacion() {
+    const caster = numero("caster");
+    const camber = numero("camber");
+    const toe = numero("toe");
+    const tipo = document.getElementById("toeTipo").value;
+
+    if (!validar([caster,camber,toe])) {
+        mostrar("rAlineacion", "Introduce valores numéricos válidos.");
+        return;
+    }
+
+    const convergencia = tipo === "positivo" ? "hacia dentro" : "hacia fuera";
+    const camberTexto = camber < 0
+        ? "La parte superior de la rueda se inclina hacia el vehículo."
+        : camber > 0
+            ? "La parte superior de la rueda se inclina hacia afuera."
+            : "La rueda está vertical en la vista frontal.";
+
+    const casterTexto = caster > 0
+        ? "Caster positivo: el eje de dirección tiene inclinación positiva según la convención habitual."
+        : caster < 0
+            ? "Caster negativo: el eje de dirección tiene inclinación negativa según la convención habitual."
+            : "Caster neutro: sin inclinación longitudinal según esta convención.";
+
+    mostrar("rAlineacion",
+        "<strong>Caster:</strong> " + fmt(caster) + "°. " + casterTexto + "<br>" +
+        "<strong>Camber:</strong> " + fmt(camber) + "°. " + camberTexto + "<br>" +
+        "<strong>Convergencia total:</strong> " + fmt(Math.abs(toe)) + "° " + convergencia + ".<br>" +
+        "<strong>Por rueda, si es simétrica:</strong> " + fmt(Math.abs(toe)/2) + "° aproximadamente.<br>" +
+        "<p class='nota'>La interpretación de los signos depende de la convención usada por el equipo de alineación. Compara siempre con los valores del fabricante.</p>"
+    );
+}
+
+function calcularGiro() {
+    const volante = numero("volante");
+    const rueda = numero("rueda");
+    const L = numero("gL");
+    const angulo = numero("gA");
+    const T = numero("gT");
+
+    if (!validar([volante,rueda,L,angulo,T]) ||
+        volante <= 0 || rueda <= 0 || L <= 0 ||
+        angulo <= 0 || angulo >= 90 || T < 0) {
+        mostrar("rGiro", "Introduce valores positivos válidos y ángulos de rueda menores de 90°.");
+        return;
+    }
+
+    const relacion = volante / rueda;
+    const radio = L / Math.tan(rad(angulo));
+    const radioExterior = Math.sqrt(radio * radio + L * L) + T / 2;
+
+    mostrar("rGiro",
+        "<strong>Relación de dirección:</strong> " + fmt(relacion, 2) + ":1<br>" +
+        "<strong>Radio geométrico del eje trasero:</strong> " + fmt(radio) + " m<br>" +
+        "<strong>Radio exterior aproximado:</strong> " + fmt(radioExterior) + " m<br>" +
+        "<strong>Giro del volante:</strong> " + fmt(volante) + "°<br>" +
+        "<strong>Giro de rueda usado para la relación:</strong> " + fmt(rueda) + "°<br>" +
+        "<p class='nota'>Se usa el ángulo medio para el radio y el ángulo indicado por separado para la relación. En un vehículo real, ambos valores pueden no corresponder a la misma posición.</p>"
+    );
+}
+
+function calcularBarra() {
+    const x1 = numero("x1");
+    const y1 = numero("y1");
+    const x2 = numero("x2");
+    const y2 = numero("y2");
+
+    if (!validar([x1,y1,x2,y2])) {
+        mostrar("rBarra", "Introduce coordenadas válidas.");
+        return;
+    }
+
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const longitud = Math.sqrt(dx*dx + dy*dy);
+    const angulo = grados(Math.atan2(dy,dx));
+
+    mostrar("rBarra",
+        "<strong>Diferencia horizontal:</strong> " + fmt(dx) + " mm<br>" +
+        "<strong>Diferencia vertical:</strong> " + fmt(dy) + " mm<br>" +
+        "<strong>Distancia entre conexiones:</strong> " + fmt(longitud) + " mm<br>" +
+        "<strong>Ángulo de la barra respecto a X:</strong> " + fmt(angulo) + "°<br>" +
+        "<p class='nota'>La distancia calculada es entre centros de conexión; no incluye roscas, longitud de terminales ni ajustes.</p>"
+    );
+}
+
+function calcularMangueta() {
+    const brazo = numero("brazo");
+    const ang1 = numero("ang1");
+    const ang2 = numero("ang2");
+
+    if (!validar([brazo,ang1,ang2]) || brazo <= 0) {
+        mostrar("rMangueta", "Introduce una longitud positiva y ángulos válidos.");
+        return;
+    }
+
+    const x1 = brazo * Math.cos(rad(ang1));
+    const y1 = brazo * Math.sin(rad(ang1));
+    const x2 = brazo * Math.cos(rad(ang2));
+    const y2 = brazo * Math.sin(rad(ang2));
+    const desplazamiento = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+
+    mostrar("rMangueta",
+        "<strong>Posición inicial:</strong> X = " + fmt(x1) + " mm, Y = " + fmt(y1) + " mm<br>" +
+        "<strong>Posición final:</strong> X = " + fmt(x2) + " mm, Y = " + fmt(y2) + " mm<br>" +
+        "<strong>Desplazamiento del extremo:</strong> " + fmt(desplazamiento) + " mm<br>" +
+        "<p class='nota'>Se supone un brazo rígido que gira alrededor de un pivote fijo. No representa por sí solo la cinemática completa de la dirección.</p>"
+    );
+}
+</script>
+
+</body>
+</html>
